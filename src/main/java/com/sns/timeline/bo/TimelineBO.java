@@ -34,7 +34,7 @@ public class TimelineBO {
 		// 글 목록 가져온다.
 		List<PostEntity> postList = postBO.getPostList();
 		
-		// 글 목록 반목문 순회
+		// 글 목록 반복문 순회
 		// postEntity => cardView   => cardViewList에 담는다.
 		for (PostEntity post : postList) {  // 0 1 2
 			// post에 대응되는 하나의 카드를 만든다.
@@ -51,7 +51,7 @@ public class TimelineBO {
 			List<CommentView> commentViewList = commentBO.generateCommentViewList(post.getId());
 			card.setCommentList(commentViewList);
 			
-			//★★★★★★ cardViewList에 담는다.
+			//★★★★★ cardViewList에 담는다.
 			cardViewList.add(card);
 		}
 		
