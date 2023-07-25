@@ -27,24 +27,24 @@
 		<%-- 타임라인 영역 --%>
 		<div class="timeline-box my-5">
 		
-			<c:forEach items="${postList}" var="post">
+			<c:forEach items="${cardList}" var="card">
 			<%-- 카드1 --%>
 			<div class="card border rounded mt-3">
 				<%-- 글쓴이, 더보기(삭제) --%>
 				<div class="p-2 d-flex justify-content-between">
-					<span class="font-weight-bold">글쓴이${post.userId}</span>
-
+					<span class="font-weight-bold">${card.user.loginId}</span>
+					
 					<%-- 더보기 ... --%>
 					<a href="#" class="more-btn">
 						<img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
 					</a>
 				</div>
-
+				
 				<%-- 카드 이미지 --%>
 				<div class="card-img">
-					<img src="${post.imagePath}" class="w-100" alt="본문 이미지">
+					<img src="${card.post.imagePath}" class="w-100" alt="본문 이미지">
 				</div>
-
+				
 				<%-- 좋아요 --%>
 				<div class="card-like m-3">
 					<a href="#" class="like-btn">
@@ -52,35 +52,35 @@
 					</a>
 					좋아요 100개
 				</div>
-
+				
 				<%-- 글 --%>
 				<div class="card-post m-3">
-					<span class="font-weight-bold">글쓴이${post.userId}</span>
-					<span>${post.content}</span>
+					<span class="font-weight-bold">${card.user.loginId}</span>
+					<span>${card.post.content}</span>
 				</div>
-
+				
 				<%-- 댓글 제목 --%>
 				<div class="card-comment-desc border-bottom">
 					<div class="ml-3 mb-1 font-weight-bold">댓글</div>
 				</div>
-
+				
 				<%-- 댓글 목록 --%>
 				<div class="card-comment-list m-2">
 					<%-- 댓글 내용들 --%>
 					<div class="card-comment m-1">
 						<span class="font-weight-bold">댓글쓴이</span>
 						<span>댓글 내용</span>
-
+						
 						<%-- 댓글 삭제 버튼 --%>
 						<a href="#" class="comment-del-btn">
 							<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10px" height="10px">
 						</a>
 					</div>
-
+					
 					<%-- 댓글 쓰기 --%>
 					<div class="comment-write d-flex border-top mt-2">
 						<input type="text" class="form-control border-0 mr-2 comment-input" placeholder="댓글 달기"/> 
-						<button type="button" class="comment-btn btn btn-light" data-post-id="${post.id}">게시</button>
+						<button type="button" class="comment-btn btn btn-light" data-post-id="${card.post.id}">게시</button>
 					</div>
 				</div> <%--// 댓글 목록 끝 --%>
 			</div> <%--// 카드1 끝 --%>
@@ -171,9 +171,26 @@ $(document).ready(function() {
 	// 댓글 작성
 	$(".comment-btn").on('click', function() {
 		let postId = $(this).data('post-id');
-		// 댓글 내용 가져오기
+		// 방법 1) 댓글 내용 가져오기
+		// let comment = $(this).siblings('input').val().trim();
 		
-		// ajax
+		// 방법 2) 댓글 내용 가져오기
+		let comment = $(this).prev().val().trim();
+		
+		$.ajax({
+			type:"post"
+			, url:"/comment/create"
+			, data:{"postId":postId, "content":content}
+		
+			, success:function(data) {
+				if (data.code == 1) {
+					location.reload(true);
+				}
+			}
+			, error:function(request, status, error) {
+				alert("댓글 쓰기 실패했습니다.");
+			}
+		});
 	});
 });
 </script>
