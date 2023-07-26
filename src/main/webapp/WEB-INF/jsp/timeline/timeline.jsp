@@ -47,11 +47,20 @@
 				
 				<%-- 좋아요 (if문 생성 후 CardView의 filledLike가 true 면 채워진 하트 아이콘) --%>
 				<div class="card-like m-3">
-					<a href="#" class="like-btn" data-post-id="${card.post.id}">
-						<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="heart">
-						<img src="https://www.iconninja.com/files/171/138/493/fill-heart-icon.png" width="18" height="18" alt="filled heart" class="d-none">
-					</a>
-					좋아요 100개
+					<%-- 좋아요가 눌러져 있지 않을 때 or 비로그인 => 빈 하트 --%>
+					<c:if test="${card.filledLike eq false}">
+						<a href="#" class="like-btn" data-post-id="${card.post.id}">
+							<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="heart">
+						</a>
+					</c:if>
+					
+					<%-- 좋아요가 눌러져 있을 때 or 로그인 => 채워진 하트 --%>
+					<c:if test="${card.filledLike}">
+						<a href="#" class="like-btn" data-post-id="${card.post.id}">
+							<img src="https://www.iconninja.com/files/527/809/128/heart-icon.png" width="18" height="18" alt="filled heart">
+						</a>
+					</c:if>
+					좋아요 ${card.likeCount}개
 				</div>
 				
 				<%-- 글 --%>
